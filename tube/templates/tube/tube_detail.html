@@ -1,13 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="m-6 space-y-4">
+<section class="detail-container m-6 space-y-4">
     
-    <video class="w-[100%]" controls>
+    <video class="w-100" controls>
         <source src="{{ post.video_file.url }}"></source>      
     </video>
 
     <h2 class="font-bold text-xl">{{ post.title }}</h2>
     <p>{{ post.author }}</p>
+
+    <!-- 구독을 했을 경우 구독중 버튼을 구독을 안했을 경우 구독 버튼을 노출-->
+    {% if user.is_authenticated and user != post.author %}
+        {# {{ post.author.subscribers.all }}를 그냥 순회돌면 쿼리셋입니다. #}
+        {% if is_subscribed %}
+            <form action="{% url 'tube_unsubscribe' post.pk post.author.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="구독중" class="border border-gray-200 p-2 rounded-lg">
+            </form>
+        {% else %}
+            <form action="{% url 'tube_subscribe' post.pk post.author.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="구독" class="border border-gray-200 p-2 rounded-lg">
+            </form>
+        {% endif %}
+    {% endif %}
+
     <div class="bg-gray-200 p-4 rounded-lg text-sm">
         <p>조회수 {{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
         {{ post.content|linebreaks }}
@@ -32,7 +49,7 @@
     <form action="" method="post" class="flex p-4 space-y-4 space-x-2 bg-white shadow-md rounded-lg">
         {% csrf_token %}
         <div class="flex w-20 items-center justify-center">
-            <label for="id_message" class="text-sm font-medium text-gray-700 text-center">댓글 작성:</label>
+            <label for="id_message" class="text-sm font-medium text-gray-700 text-center">뎃글 작성:</label>
         </div>
         
         <textarea name="message" cols="40" required="" id="id_message" class="mt-1 block w-3/4 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
