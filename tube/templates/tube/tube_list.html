@@ -1,15 +1,24 @@
+<form action="" method="get">
+    <input type="text" name="q" value="{{ request.GET.q }}">
+    <input type="submit" value="검색">
+</form>
+
 {% for post in posts %}
-<!-- 클릭했을 때 해당 게시물로 이동 -->
-<a href="{% url 'tube_detail' post.pk %}">
-    <h1>{{ post.title }}</h1>
-    <!-- 썸네일 이미지가 있는지 확인 후 로드 -->
-    {% if post.thumbnail_image %}
-    <img src="{{ post.thumbnail_image.url }}" alt="{{ post.title }}">
-    {% endif %}
-    <!-- 조회수와 업로드 날짜 -->
-    <!-- ㄱ 하고 한자 눌러 단축기 입력하세요. -->
-    <p>{{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
-    <p>{{ post.author }}</p>
-</a>
-<hr>
+    <!-- 클랙했을 때 해당 게시물로 이동 -->
+    <a href="{% url 'tube_detail' post.pk %}">
+        <h1>{{ post.title }}</h1>
+        <!-- 썸네일 이미지가 있는지 확인 후 로드 -->
+        {% if post.thumbnail_image %}
+        <img src="{{ post.thumbnail_image.url }}" alt="{{ post.title }}">
+        {% endif %}
+        <!-- 조회수와 업로드 날짜 -->
+        <!-- ㄱ 하고 한자 눌러 단축키 입력하세요. -->
+        <p>{{ post.view_count }}회 · {{ post.created_at|timesince }} 전</p>
+        <p>{{ post.author }}</p>
+        <!-- 태그 추가 -->
+        {% for tag in post.tags.all %}
+            <a href="{% url 'tube_tag' tag.name %}">{{ tag.name }}</a>
+        {% endfor %}
+    </a>
+    <hr>
 {% endfor %}

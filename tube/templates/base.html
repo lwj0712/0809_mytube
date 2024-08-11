@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tube 클론</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'tube_list' %}">tube</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'tube_create' %}">글쓰기</a></li>
+                    <li><a href="{% url 'user_profile' %}">프로필</a></li>
+                    <li><a href="{% url 'user_logout' %}">로그아웃</a></li>
+                {% else %}
+                    <li><a href="{% url 'user_login' %}">로그인</a></li>
+                    <li><a href="{% url 'user_signup' %}">회원가입</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <form action="" method="get">
+        <input type="text" name="q" value="{{ request.GET.q }}">
+        <input type="submit" value="검색">
+    </form>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
