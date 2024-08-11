@@ -26,6 +26,9 @@ def tube_detail(request, pk):
             message = form.cleaned_data["message"]
             c = Comment.objects.create(author=author, message=message, post=post)
             c.save()
+    if request.method == "GET": # count 수정
+        post.view_count += 1
+        post.save()
     return render(request, "tube/tube_detail.html", {"post": post, "form": form})
 
 
@@ -78,3 +81,10 @@ def tube_delete(request, pk):
 def tube_tag(request, tag):
     posts = Post.objects.filter(tags__name__iexact=tag)
     return render(request, "tube/tube_list.html", {"posts": posts})
+
+
+def tube_comment_delete(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect("tube_detail", post_pk)

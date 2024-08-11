@@ -8,4 +8,6 @@ urlpatterns = [
     path("<int:pk>/update/", views.tube_update, name="tube_update"),
     path("<int:pk>/delete/", views.tube_delete, name="tube_delete"),
     path("tag/<str:tag>/", views.tube_tag, name="tube_tag"),
+    # comment 삭제 url 추가
+    path("<int:pk>/comment_delete/", views.tube_comment_delete, name="tube_comment_delete"),
 ]
