@@ -86,5 +86,6 @@ def tube_tag(request, tag):
 def tube_comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
-    comment.delete()
+    if request.user == comment.author:
+        comment.delete()
     return redirect("tube_detail", post_pk)
