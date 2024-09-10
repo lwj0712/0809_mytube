@@ -1,4 +1,4 @@
-# MyTube
+# Django YouTube Clone
 * 동영상 플랫폼을 Django로 구현하였습니다.
 
 <br>
